@@ -353,7 +353,7 @@ document.getElementById('save-client-btn').addEventListener('click', async () =>
     }
 
     if (!tempManicurePhoto) {
-        alert('Пожалуйста, загрузите фото маникюра');
+        alert('Пожалуйста, загрузите фото маникюра !');
         return;
     }
     if (!tempPaymentPhoto) {
