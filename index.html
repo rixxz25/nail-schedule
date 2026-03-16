@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -11,6 +12,7 @@
     <link rel="apple-touch-icon" href="icons/icon-192.png">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <!-- Экран: Календарь -->
     <div id="screen-calendar" class="screen active">
@@ -73,8 +75,8 @@
                     <input type="text" id="client-name" class="form-input" placeholder="Клиент 1">
                 </label>
 
-                <label class="form-label">Сумма (₽)
-                    <input type="number" id="client-amount" class="form-input" placeholder="0" min="0">
+                <label class="form-label">Сумма (₽)<span class="required">*</span>
+                    <input type="number" id="client-amount" class="form-input" placeholder="0" min="100" max="10000">
                 </label>
 
                 <label class="form-label">Способ оплаты</label>
@@ -92,7 +94,8 @@
                     </div>
                 </div>
 
-                <label class="form-label" id="payment-photo-label">Фото оплаты</label>
+                <label class="form-label" id="payment-photo-label">Фото оплаты <span class="required">*</span>
+                </label>
                 <div id="payment-photo-area" class="photo-upload-area">
                     <input type="file" id="payment-photo" accept="image/*" class="file-input">
                     <div id="payment-preview" class="photo-preview">
@@ -123,4 +126,5 @@
         }
     </script>
 </body>
+
 </html>

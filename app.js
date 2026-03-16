@@ -192,6 +192,12 @@ document.getElementById('btn-working').addEventListener('click', async () => {
 });
 
 document.getElementById('btn-dayoff').addEventListener('click', async () => {
+    const clients = await dbGetAllByIndex('clients', 'date', selectedDate);
+    if (clients.length > 0) {
+        alert('Нельзя отметить день как выходной, пока есть записанные клиенты. Сначала удалите всех клиентов этого дня.');
+        return;
+    }
+
     await dbPut('days', { date: selectedDate, type: 'dayoff' });
     updateDayTypeUI('dayoff');
 });
@@ -306,8 +312,9 @@ function showPreview(previewId, dataUrl) {
 function setPaymentType(type) {
     document.getElementById('pay-cash').classList.toggle('active', type === 'cash');
     document.getElementById('pay-card').classList.toggle('active', type === 'card');
-    document.getElementById('payment-photo-label').textContent =
-        type === 'cash' ? 'Фото оплаты' : 'Скриншот из банка';
+    const baseText = type === 'cash' ? 'Фото оплаты' : 'Скриншот из банка';
+    document.getElementById('payment-photo-label').innerHTML =
+        baseText + ' <span class="required">*</span>';
 }
 
 function getPaymentType() {
@@ -333,13 +340,27 @@ document.getElementById('payment-photo').addEventListener('change', async (e) =>
 
 document.getElementById('save-client-btn').addEventListener('click', async () => {
     const name = document.getElementById('client-name').value.trim();
-    const amount = parseInt(document.getElementById('client-amount').value) || 0;
+    const amountRaw = document.getElementById('client-amount').value.trim();
+    const amount = parseInt(amountRaw, 10);
     const paymentType = getPaymentType();
+
+    const MIN_AMOUNT = 100;
+    const MAX_AMOUNT = 10000;
+
+    if (!amountRaw || Number.isNaN(amount) || amount < MIN_AMOUNT || amount > MAX_AMOUNT) {
+        alert('Пожалуйста, введите сумму в диапазоне от 100 до 10000');
+        return;
+    }
 
     if (!tempManicurePhoto) {
         alert('Пожалуйста, загрузите фото маникюра');
         return;
     }
+    if (!tempPaymentPhoto) {
+        alert('Пожалуйста, загрузите фото оплаты !');
+        return;
+    }
+
 
     const clientData = {
         date: selectedDate,
