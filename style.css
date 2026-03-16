@@ -587,6 +587,25 @@ body {
     text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
+.photo-download-btn {
+    position: absolute;
+    top: 18px;
+    left: 16px;
+    z-index: 10;
+    background: rgba(0,0,0,0.55);
+    color: var(--white);
+    text-decoration: none;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    backdrop-filter: blur(4px);
+}
+
+.photo-download-btn:active {
+    transform: scale(0.97);
+}
+
 .modal-photo-content img {
     max-width: 100%;
     max-height: 90vh;

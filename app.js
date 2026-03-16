@@ -221,7 +221,7 @@ async function renderClients() {
         const payLabel = c.paymentType === 'cash' ? 'Наличные' : 'Безналичные';
         const payClass = c.paymentType === 'cash' ? 'cash' : 'card';
         const thumbHtml = c.manicurePhoto
-            ? `<img src="${c.manicurePhoto}" class="client-card-thumb" alt="фото">`
+            ? `<img src="${c.manicurePhoto}" class="client-card-thumb" alt="фото" data-photo-src="${c.manicurePhoto}">`
             : '';
 
         html += `
@@ -306,7 +306,7 @@ function resetPreview(previewId) {
 function showPreview(previewId, dataUrl) {
     const preview = document.getElementById(previewId);
     preview.classList.add('has-photo');
-    preview.innerHTML = `<img src="${dataUrl}" alt="фото">`;
+    preview.innerHTML = `<img src="${dataUrl}" alt="фото" class="open-photo" data-photo-src="${dataUrl}">`;
 }
 
 function setPaymentType(type) {
@@ -402,14 +402,23 @@ document.getElementById('photo-close').addEventListener('click', () => {
     document.getElementById('modal-photo').classList.remove('active');
 });
 
-// Click on preview images to view fullscreen
+function openPhotoModal(src) {
+    const modal = document.getElementById('modal-photo');
+    const full = document.getElementById('photo-full');
+    const download = document.getElementById('photo-download');
+
+    full.src = src;
+    download.href = src;
+    download.download = `photo_${Date.now()}.jpg`;
+    modal.classList.add('active');
+}
+
+// Click on preview images to view fullscreen + download
 document.addEventListener('click', (e) => {
-    const img = e.target.closest('.client-card-thumb');
-    if (img) {
-        e.stopPropagation();
-        document.getElementById('photo-full').src = img.src;
-        document.getElementById('modal-photo').classList.add('active');
-    }
+    const img = e.target.closest('.client-card-thumb, .open-photo');
+    if (!img) return;
+    e.stopPropagation();
+    openPhotoModal(img.dataset.photoSrc || img.src);
 });
 
 // Close modals on backdrop click

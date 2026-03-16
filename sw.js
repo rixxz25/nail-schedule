@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nail-schedule-v1';
+const CACHE_NAME = 'nail-schedule-v2';
 const ASSETS = [
     '/index.html',
     '/style.css',
