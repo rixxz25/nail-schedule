@@ -206,7 +206,9 @@ document.getElementById('back-to-calendar').addEventListener('click', () => {
 async function renderClients() {
     const list = document.getElementById('clients-list');
     const clients = await dbGetAllByIndex('clients', 'date', selectedDate);
-
+    calculateIncome(clients)
+    const allClients = await dbGetAll('clients')
+    calculateIncome(allClients)
     let totalSum = 0;
     let html = '';
 
@@ -286,6 +288,8 @@ async function openClientModal(clientId) {
         nameInput.value = `Клиент ${clients.length + 1}`;
         amountInput.value = '';
         setPaymentType('cash');
+        const allClients = await dbGetAll('clients')
+        calculateIncome(allClients)
     }
 
     modal.classList.add('active');
@@ -411,4 +415,41 @@ async function init() {
     await renderCalendar();
 }
 
-init();
+function calculateIncome(clients) {
+
+    let day = 0
+    let month = 0
+    let year = 0
+
+    const today = new Date()
+
+    clients.forEach(client => {
+
+        const date = new Date(client.date)
+        const price = Number(client.amount) || 0
+
+        // день
+        if (date.toDateString() === today.toDateString()) {
+            day += price
+        }
+
+        // месяц
+        if (
+            date.getMonth() === today.getMonth() &&
+            date.getFullYear() === today.getFullYear()
+        ) {
+            month += price
+        }
+
+        // год
+        if (date.getFullYear() === today.getFullYear()) {
+            year += price
+        }
+
+    })
+
+    document.getElementById("incomeDay").textContent = day.toLocaleString('ru') + ' ₽'
+    document.getElementById("incomeMonth").textContent = month.toLocaleString('ru') + ' ₽'
+    document.getElementById("incomeYear").textContent = year.toLocaleString('ru') + ' ₽'
+
+}

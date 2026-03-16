@@ -610,3 +610,22 @@ body {
     padding: 48px 0;
     font-weight: 600;
 }
+.stats{
+    display:flex;
+    gap:10px;
+    margin:10px 0;
+  }
+  
+  .stat{
+    background:#f3f3f3;
+    padding:10px;
+    border-radius:8px;
+    flex:1;
+    text-align:center;
+  }
+  
+  .stat strong{
+    display:block;
+    font-size:18px;
+    margin-top:5px;
+  }
