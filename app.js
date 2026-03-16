@@ -307,7 +307,7 @@ function setPaymentType(type) {
     document.getElementById('pay-cash').classList.toggle('active', type === 'cash');
     document.getElementById('pay-card').classList.toggle('active', type === 'card');
     document.getElementById('payment-photo-label').textContent =
-        type === 'cash' ? 'Фото наличных' : 'Скриншот из банка';
+        type === 'cash' ? 'Фото оплаты' : 'Скриншот из банка';
 }
 
 function getPaymentType() {
