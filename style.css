@@ -1,0 +1,612 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --pink: #e91e8c;
+    --pink-light: #fce4f3;
+    --pink-dark: #b8156e;
+    --green: #4caf50;
+    --green-light: #e8f5e9;
+    --red: #ef5350;
+    --red-light: #ffebee;
+    --gray: #9e9e9e;
+    --gray-light: #f5f5f5;
+    --text: #333;
+    --text-light: #777;
+    --bg: #fafafa;
+    --white: #fff;
+    --shadow: 0 2px 8px rgba(0,0,0,0.1);
+    --radius: 12px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
+}
+
+.screen {
+    display: none;
+    padding: 0 16px 24px;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.screen.active {
+    display: block;
+}
+
+/* Header */
+.header {
+    display: flex;
+    align-items: center;
+    padding: 16px 0;
+    gap: 12px;
+}
+
+.header h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--pink);
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--pink);
+    cursor: pointer;
+    padding: 4px 8px;
+}
+
+/* Month Navigation */
+.month-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0 16px;
+}
+
+.month-title {
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.nav-btn {
+    background: var(--pink-light);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 18px;
+    color: var(--pink);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-btn:active {
+    background: var(--pink);
+    color: var(--white);
+}
+
+/* Calendar */
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-light);
+    padding-bottom: 8px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 2px solid transparent;
+    position: relative;
+    transition: all 0.15s;
+}
+
+.calendar-day:active {
+    transform: scale(0.93);
+}
+
+.calendar-day.empty {
+    cursor: default;
+}
+
+.calendar-day.today {
+    border-color: var(--pink);
+}
+
+.calendar-day.working {
+    background: var(--green-light);
+    color: var(--green);
+    font-weight: 700;
+}
+
+.calendar-day.dayoff {
+    background: var(--red-light);
+    color: var(--red);
+    font-weight: 700;
+}
+
+.calendar-day .client-count {
+    font-size: 9px;
+    position: absolute;
+    bottom: 2px;
+    color: var(--text-light);
+}
+
+.calendar-day.working .client-count {
+    color: var(--green);
+}
+
+/* Legend */
+.legend {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    padding: 16px 0;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-light);
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.legend-dot.working {
+    background: var(--green);
+}
+
+.legend-dot.dayoff {
+    background: var(--red);
+}
+
+/* Day Type Selector */
+.day-type-selector {
+    display: flex;
+    gap: 8px;
+    padding: 8px 0 16px;
+}
+
+.type-btn {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid var(--gray-light);
+    border-radius: var(--radius);
+    background: var(--white);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--text-light);
+}
+
+.type-btn:active {
+    transform: scale(0.97);
+}
+
+.type-btn.active[data-type="working"] {
+    border-color: var(--green);
+    background: var(--green-light);
+    color: var(--green);
+}
+
+.type-btn.active[data-type="dayoff"] {
+    border-color: var(--red);
+    background: var(--red-light);
+    color: var(--red);
+}
+
+/* Clients Section */
+.clients-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+}
+
+.clients-header h2 {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.add-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: var(--pink);
+    color: var(--white);
+    font-size: 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow);
+    line-height: 1;
+}
+
+.add-btn:active {
+    background: var(--pink-dark);
+    transform: scale(0.93);
+}
+
+/* Client Card */
+.client-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 14px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+
+.client-card:active {
+    transform: scale(0.98);
+}
+
+.client-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.client-card-name {
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.client-card-amount {
+    font-weight: 700;
+    color: var(--pink);
+    font-size: 15px;
+}
+
+.client-card-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-light);
+}
+
+.client-card-thumb {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.client-card-payment {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.client-card-payment.cash {
+    background: #e8f5e9;
+    color: #388e3c;
+}
+
+.client-card-payment.card {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.clients-list:empty::after {
+    content: "Нажмите + чтобы добавить клиента";
+    display: block;
+    text-align: center;
+    color: var(--text-light);
+    font-size: 14px;
+    padding: 32px 0;
+}
+
+/* Day Totals */
+.day-totals {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 14px;
+    margin-top: 16px;
+    box-shadow: var(--shadow);
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 15px;
+}
+
+.total-row.highlight {
+    font-weight: 700;
+    color: var(--pink);
+    font-size: 17px;
+    border-top: 1px solid var(--gray-light);
+    padding-top: 10px;
+    margin-top: 4px;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 100;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--white);
+    border-radius: 20px 20px 0 0;
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 20px;
+    animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+}
+
+.modal-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 0 4px;
+}
+
+/* Form */
+.form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-top: 14px;
+    margin-bottom: 6px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--gray-light);
+    border-radius: var(--radius);
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.15s;
+    margin-top: 4px;
+}
+
+.form-input:focus {
+    border-color: var(--pink);
+}
+
+.required {
+    color: var(--red);
+}
+
+/* Payment Toggle */
+.payment-toggle {
+    display: flex;
+    gap: 8px;
+}
+
+.pay-btn {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid var(--gray-light);
+    border-radius: var(--radius);
+    background: var(--white);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--text-light);
+    transition: all 0.15s;
+}
+
+.pay-btn.active[data-pay="cash"] {
+    border-color: #388e3c;
+    background: #e8f5e9;
+    color: #388e3c;
+}
+
+.pay-btn.active[data-pay="card"] {
+    border-color: #1976d2;
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+/* Photo Upload */
+.photo-upload-area {
+    position: relative;
+    margin-top: 4px;
+}
+
+.file-input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.photo-preview {
+    border: 2px dashed var(--gray);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+    color: var(--text-light);
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-height: 80px;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+
+.photo-preview.has-photo {
+    border-style: solid;
+    border-color: var(--pink);
+    padding: 0;
+    min-height: 160px;
+}
+
+.photo-preview.has-photo span {
+    display: none;
+}
+
+.photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.upload-icon {
+    font-size: 28px;
+}
+
+/* Buttons */
+.modal-footer {
+    display: flex;
+    gap: 10px;
+    padding-top: 20px;
+}
+
+.btn {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.btn-primary {
+    background: var(--pink);
+    color: var(--white);
+}
+
+.btn-danger {
+    background: var(--red);
+    color: var(--white);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Photo Modal */
+.modal-photo-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
+
+.modal-photo-content .close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    color: var(--white);
+    font-size: 36px;
+    z-index: 10;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.modal-photo-content img {
+    max-width: 100%;
+    max-height: 90vh;
+    border-radius: var(--radius);
+    object-fit: contain;
+}
+
+/* Empty state for day-off */
+#clients-section.dayoff-mode .clients-header,
+#clients-section.dayoff-mode .clients-list,
+#clients-section.dayoff-mode .day-totals {
+    display: none;
+}
+
+#clients-section.dayoff-mode::after {
+    content: "Выходной день";
+    display: block;
+    text-align: center;
+    font-size: 18px;
+    color: var(--red);
+    padding: 48px 0;
+    font-weight: 600;
+}

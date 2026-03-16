@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Мой График</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#e91e8c">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Экран: Календарь -->
+    <div id="screen-calendar" class="screen active">
+        <header class="header">
+            <h1>Мой График</h1>
+        </header>
+        <div class="month-nav">
+            <button id="prev-month" class="nav-btn">&larr;</button>
+            <span id="month-title" class="month-title"></span>
+            <button id="next-month" class="nav-btn">&rarr;</button>
+        </div>
+        <div class="calendar-weekdays">
+            <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+        </div>
+        <div id="calendar-grid" class="calendar-grid"></div>
+        <div class="legend">
+            <span class="legend-item"><span class="legend-dot working"></span>Рабочий</span>
+            <span class="legend-item"><span class="legend-dot dayoff"></span>Выходной</span>
+        </div>
+    </div>
+
+    <!-- Экран: Детали дня -->
+    <div id="screen-day" class="screen">
+        <header class="header">
+            <button id="back-to-calendar" class="back-btn">&larr;</button>
+            <h1 id="day-title"></h1>
+        </header>
+        <div class="day-type-selector">
+            <button id="btn-working" class="type-btn" data-type="working">Рабочий</button>
+            <button id="btn-dayoff" class="type-btn" data-type="dayoff">Выходной</button>
+        </div>
+        <div id="clients-section">
+            <div class="clients-header">
+                <h2>Клиенты</h2>
+                <button id="add-client-btn" class="add-btn">+</button>
+            </div>
+            <div id="clients-list" class="clients-list"></div>
+            <div id="day-totals" class="day-totals">
+                <div class="total-row">
+                    <span>Итого за день:</span>
+                    <span id="total-sum">0 ₽</span>
+                </div>
+                <div class="total-row highlight">
+                    <span>После вычета 40%:</span>
+                    <span id="total-after-deduction">0 ₽</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модалка: Добавление/Редактирование клиента -->
+    <div id="modal-client" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-client-title">Новый клиент</h2>
+                <button id="modal-close" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <label class="form-label">Имя клиента
+                    <input type="text" id="client-name" class="form-input" placeholder="Клиент 1">
+                </label>
+
+                <label class="form-label">Сумма (₽)
+                    <input type="number" id="client-amount" class="form-input" placeholder="0" min="0">
+                </label>
+
+                <label class="form-label">Способ оплаты</label>
+                <div class="payment-toggle">
+                    <button id="pay-cash" class="pay-btn active" data-pay="cash">Наличные</button>
+                    <button id="pay-card" class="pay-btn" data-pay="card">Безналичные</button>
+                </div>
+
+                <label class="form-label">Фото маникюра <span class="required">*</span></label>
+                <div id="manicure-photo-area" class="photo-upload-area">
+                    <input type="file" id="manicure-photo" accept="image/*" capture="environment" class="file-input">
+                    <div id="manicure-preview" class="photo-preview">
+                        <span class="upload-icon">📷</span>
+                        <span>Нажмите для загрузки</span>
+                    </div>
+                </div>
+
+                <label class="form-label" id="payment-photo-label">Фото наличных</label>
+                <div id="payment-photo-area" class="photo-upload-area">
+                    <input type="file" id="payment-photo" accept="image/*" capture="environment" class="file-input">
+                    <div id="payment-preview" class="photo-preview">
+                        <span class="upload-icon">📷</span>
+                        <span>Нажмите для загрузки</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="delete-client-btn" class="btn btn-danger hidden">Удалить</button>
+                <button id="save-client-btn" class="btn btn-primary">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модалка: Просмотр фото -->
+    <div id="modal-photo" class="modal">
+        <div class="modal-photo-content">
+            <button id="photo-close" class="close-btn">&times;</button>
+            <img id="photo-full" src="" alt="Фото">
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
+</body>
+</html>
